@@ -9,24 +9,6 @@ class RandomWordsState extends State<RandomWords> {
   final Set<WordPair> _saved = new Set<WordPair>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
-  Widget _buildSuggestions() {
-    //Metodo chamado no metodo build
-    return ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemBuilder: (context, i) {
-          //função chamada é chamada uma vez por palavra sugerida e coloca cada sugestão dentro da listView
-          if (i.isOdd)
-            return Divider(); //Adiciona uma linha de pixel antes de cada linha da lista
-
-          final index = i ~/ 2; //divide por dois e retorna um inteiro()
-          if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(
-                10)); //Gera mais 10 palavras quando o usuario chega no fim do scroll
-          }
-          return _buildRow(_suggestions[index]);
-        });
-  }
-
   void _pushSaved() {
     //Metodo passado como parametro no IconButton
     Navigator.of(context).push(
@@ -86,27 +68,53 @@ class RandomWordsState extends State<RandomWords> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Startup Name Generator'),
-        actions: <Widget>[
-          new IconButton(icon: const Icon(Icons.list), onPressed: _pushSaved),
-        ],
-      ),
-      body: _buildSuggestions(),
-      persistentFooterButtons: <Widget>[
-        BottomSheet(builder: (builder) {
-          return Container(height: 60.0, child: Text('I am text'));
-        
-        },
-        onClosing: _closeModal)
-      ],
-    );
+        appBar: AppBar(
+          title: Text('Gerador De Nomes'),
+          actions: <Widget>[
+            new IconButton(icon: const Icon(Icons.list), onPressed: _pushSaved),
+          ],
+        ),
+        body: new Center(
+            child: new Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+                child: SizedBox(
+                    child: new ListView.builder(
+                        padding: const EdgeInsets.all(16.0),
+                        itemBuilder: (context, i) {
+                          //função chamada é chamada uma vez por palavra sugerida e coloca cada sugestão dentro da listView
+                          if (i.isOdd)
+                            return Divider(); //Adiciona uma linha de pixel antes de cada linha da lista
+
+                          final index =
+                              i ~/ 2; //divide por dois e retorna um inteiro()
+                          if (index >= _suggestions.length) {
+                            _suggestions.addAll(generateWordPairs().take(
+                                10)); //Gera mais 10 palavras quando o usuario chega no fim do scroll
+                          }
+                          return _buildRow(_suggestions[index]);
+                        }))),
+            Expanded(
+                child: SizedBox(
+                    child: new RaisedButton(
+              onPressed: onPressedFunc,
+              textColor: Colors.white,
+              color: Colors.red,
+              padding: const EdgeInsets.all(8.0),
+              child: new Text(
+                "Novo",
+              ),
+            )))
+          ],
+        )));
   }
+
+  onPressedFunc() {}
 
   void _closeModal() {
     print('modal closed');
   }
-
 }
 
 class RandomWords extends StatefulWidget {
