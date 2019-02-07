@@ -68,6 +68,13 @@ class RandomWordsState extends State<RandomWords> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print("Fui pressionado!")
+        },
+        child: Icon(Icons.add,),
+        backgroundColor: Colors.pink,
+      ),
         appBar: AppBar(
           title: Text('Gerador De Nomes'),
           actions: <Widget>[
@@ -95,19 +102,20 @@ class RandomWordsState extends State<RandomWords> {
                           }
                           return _buildRow(_suggestions[index]);
                         }))),
-            Expanded(
-                child: SizedBox(
-                    child: new RaisedButton(
-              onPressed: onPressedFunc,
-              textColor: Colors.white,
-              color: Colors.red,
-              padding: const EdgeInsets.all(8.0),
-              child: new Text(
-                "Novo",
-              ),
-            )))
+            //Expanded(
+            //    child: SizedBox(
+            //        child: new RaisedButton(
+            //  onPressed: onPressedFunc,
+            //  textColor: Colors.white,
+            //  color: Colors.red,
+            //  padding: const EdgeInsets.all(8.0),
+            //  child: new Text(
+            //    "Novo",
+            //  ),
+            //)))
           ],
-        )));
+        ))
+      );
   }
 
   onPressedFunc() {}
