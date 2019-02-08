@@ -104,17 +104,6 @@ class RandomWordsState extends State<RandomWords> {
                           }
                           return _buildRow(_suggestions[index]);
                         }))),
-            //Expanded(
-            //    child: SizedBox(
-            //        child: new RaisedButton(
-            //  onPressed: onPressedFunc,
-            //  textColor: Colors.white,
-            //  color: Colors.red,
-            //  padding: const EdgeInsets.all(8.0),
-            //  child: new Text(
-            //    "Novo",
-            //  ),
-            //)))
           ],
         )));
   }
