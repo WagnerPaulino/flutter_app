@@ -8,6 +8,8 @@ class RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
   final Set<WordPair> _saved = new Set<WordPair>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
+  TextEditingController _controller = new TextEditingController();
+  FocusNode _textFocus = new FocusNode();
 
   void _pushSaved() {
     //Metodo passado como parametro no IconButton
@@ -68,13 +70,13 @@ class RandomWordsState extends State<RandomWords> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print("Fui pressionado!")
-        },
-        child: Icon(Icons.add,),
-        backgroundColor: Colors.pink,
-      ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _onClickAdd,
+          child: Icon(
+            Icons.add,
+          ),
+          backgroundColor: Colors.pink,
+        ),
         appBar: AppBar(
           title: Text('Gerador De Nomes'),
           actions: <Widget>[
@@ -114,14 +116,60 @@ class RandomWordsState extends State<RandomWords> {
             //  ),
             //)))
           ],
-        ))
-      );
+        )));
   }
 
-  onPressedFunc() {}
+  onSave(GlobalKey<FormState> formState) {
+    final first = this._controller.text.split(" ")[0];
+    final secund = this._controller.text.split(" ")[1];
+    this._saved.add(WordPair(first, secund));
+    this._suggestions.add(WordPair(first, secund));
+    formState.currentState?.reset();
+    Navigator.of(context).pop();
+  }
 
-  void _closeModal() {
-    print('modal closed');
+  void _onClickAdd() {
+    final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+    final Size screenSize = MediaQuery.of(context).size;
+    Navigator.of(context).push(
+      new MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Adicionar Nomes Personalizados'),
+            ),
+            body: new Container(
+              padding: new EdgeInsets.all(20.0),
+              child: new Form(
+                key: _formKey,
+                child: new ListView(
+                  children: <Widget>[
+                    new TextFormField(
+                        controller: _controller,
+                        focusNode: _textFocus,
+                        keyboardType: TextInputType
+                            .emailAddress, // Use email input type for emails.
+                        decoration:
+                            new InputDecoration(labelText: 'Digite um Nome',hintText: 'Nome e Sobrenome'),
+                        onSaved: (String value) {
+                          
+                        }),
+                    new Container(
+                      width: screenSize.width,
+                      child: new RaisedButton(
+                        child: new Text('Salvar',
+                            style: new TextStyle(color: Colors.blue)),
+                        onPressed: () => onSave(_formKey),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }
 
