@@ -137,7 +137,7 @@ class RandomWordsState extends State<RandomWords> {
                         controller: _controller,
                         focusNode: _textFocus,
                         keyboardType: TextInputType
-                            .emailAddress, // Use email input type for emails.
+                            .text,
                         decoration:
                             new InputDecoration(labelText: 'Digite um Nome',hintText: 'Nome e Sobrenome'),
                         onSaved: (String value) {
